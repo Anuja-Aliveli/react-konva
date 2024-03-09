@@ -21,13 +21,25 @@ const Shapes = (props: any) => {
     polygon: 'polygon',
   };
 
+  const generateCordinates = (cordinate: string) => {
+    if (cordinate === 'x') {
+      const randomX: number = Math.floor(Math.random() * (1200 - 10 + 1)) + 10;
+      console.log('gggg', randomX);
+      return randomX;
+    } else {
+      const randonY: number = Math.floor(Math.random() * (450 - 52 + 1) + 10);
+      console.log('ssss', randonY);
+      return randonY;
+    }
+  };
+
   const renderRequiredShape = () => {
     switch (props.shape) {
       case shapesObj.rectangle:
         return (
           <Rect
-            x={200}
-            y={200}
+            x={generateCordinates('x')}
+            y={generateCordinates('y')}
             width={100}
             height={100}
             fill={props.color}
@@ -39,8 +51,8 @@ const Shapes = (props: any) => {
       case shapesObj.circle:
         return (
           <Circle
-            x={200}
-            y={200}
+            x={generateCordinates('x')}
+            y={generateCordinates('y')}
             stroke="black"
             radius={50}
             draggable
@@ -51,8 +63,8 @@ const Shapes = (props: any) => {
       case shapesObj.star:
         return (
           <Star
-            x={200}
-            y={200}
+            x={generateCordinates('x')}
+            y={generateCordinates('y')}
             numPoints={5}
             innerRadius={20}
             outerRadius={50}
@@ -66,8 +78,8 @@ const Shapes = (props: any) => {
       case shapesObj.line:
         return (
           <Line
-            x={200}
-            y={200}
+            x={generateCordinates('x')}
+            y={generateCordinates('y')}
             points={[0, 0, 100, 0]}
             stroke="black"
             strokeWidth={3}
@@ -80,8 +92,8 @@ const Shapes = (props: any) => {
       case shapesObj.polygon:
         return (
           <RegularPolygon
-            x={window.innerWidth / 2}
-            y={window.innerHeight / 2}
+            x={generateCordinates('x')}
+            y={generateCordinates('y')}
             sides={5}
             radius={100}
             fill={props.color}
