@@ -1,0 +1,4 @@
+.selected-shape {
+    border-radius: 0 !important;
+    border-bottom: 3px solid #000000 !important;
+}
