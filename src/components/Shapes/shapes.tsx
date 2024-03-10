@@ -1,14 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Stage,
-  Layer,
-  Rect,
-  Circle,
-  Line,
-  Text,
-  RegularPolygon,
-  Star,
-} from 'react-konva';
+import React from 'react';
+import { Rect, Circle, Line, Text, RegularPolygon, Star } from 'react-konva';
 import { ShapesObject } from '../Interfaces/shapes.interface';
 
 const Shapes = (props: any) => {
@@ -21,25 +12,14 @@ const Shapes = (props: any) => {
     polygon: 'polygon',
   };
 
-  const generateCordinates = (cordinate: string) => {
-    if (cordinate === 'x') {
-      const randomX: number = Math.floor(Math.random() * (1200 - 10 + 1)) + 10;
-      console.log('gggg', randomX);
-      return randomX;
-    } else {
-      const randonY: number = Math.floor(Math.random() * (450 - 52 + 1) + 10);
-      console.log('ssss', randonY);
-      return randonY;
-    }
-  };
-
   const renderRequiredShape = () => {
     switch (props.shape) {
       case shapesObj.rectangle:
         return (
           <Rect
-            x={generateCordinates('x')}
-            y={generateCordinates('y')}
+            key="rectangle"
+            x={props.xCordinate}
+            y={props.yCordinate}
             width={100}
             height={100}
             fill={props.color}
@@ -51,8 +31,9 @@ const Shapes = (props: any) => {
       case shapesObj.circle:
         return (
           <Circle
-            x={generateCordinates('x')}
-            y={generateCordinates('y')}
+            key="circle"
+            x={props.xCordinate}
+            y={props.yCordinate}
             stroke="black"
             radius={50}
             draggable
@@ -63,8 +44,9 @@ const Shapes = (props: any) => {
       case shapesObj.star:
         return (
           <Star
-            x={generateCordinates('x')}
-            y={generateCordinates('y')}
+            key="star"
+            x={props.xCordinate}
+            y={props.yCordinate}
             numPoints={5}
             innerRadius={20}
             outerRadius={50}
@@ -78,22 +60,25 @@ const Shapes = (props: any) => {
       case shapesObj.line:
         return (
           <Line
-            x={generateCordinates('x')}
-            y={generateCordinates('y')}
+            key="line"
+            x={props.xCordinate}
+            y={props.yCordinate}
             points={[0, 0, 100, 0]}
-            stroke="black"
+            stroke={props.color}
             strokeWidth={3}
             fill={props.color}
+            draggable
             onClick={props.handleClick}
           />
         );
       case shapesObj.text:
-        return <Text text="Some text on canvas" fontSize={15} />;
+        return <Text key="text" text="Some text on canvas" fontSize={15} />;
       case shapesObj.polygon:
         return (
           <RegularPolygon
-            x={generateCordinates('x')}
-            y={generateCordinates('y')}
+            key="polygon"
+            x={props.xCordinate}
+            y={props.yCordinate}
             sides={5}
             radius={100}
             fill={props.color}
@@ -103,14 +88,12 @@ const Shapes = (props: any) => {
             draggable
           />
         );
+      default:
+        return null;
     }
   };
 
-  return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
-      <Layer>{renderRequiredShape()}</Layer>
-    </Stage>
-  );
+  return <>{renderRequiredShape()}</>;
 };
 
 export default Shapes;

@@ -3,14 +3,27 @@ import { PiCircle, PiRectangle, PiStar } from 'react-icons/pi';
 import { IoRemoveOutline } from 'react-icons/io5';
 import { BiPolygon } from 'react-icons/bi';
 import Shapes from '../Shapes/shapes';
+import { Stage, Layer } from 'react-konva';
 import './menu-bar.css';
+import { SelectedShapesObj } from '../Interfaces/shapes.interface';
 
 const MenuBar = () => {
-  const [shape, setShape] = useState<string>('rectangle');
-  const updateShape = (shape: string) => {
-    setShape(shape);
-  };
+  const [currentSelectedShape, setCurrentSelectedShape] = useState<string>('');
+  const [selectedShapes, setSelectedShapes] = useState<SelectedShapesObj[]>([]);
+
   const [color, setColor] = useState<string>('green');
+
+  const updateShape = (shape: string) => {
+    const xCordinate: number = Math.floor(Math.random() * (1200 - 20 + 1)) + 20;
+    const yCordinate: number = Math.floor(Math.random() * (450 - 55 + 1) + 55);
+    const newShape: SelectedShapesObj = {
+      shape,
+      xCordinate,
+      yCordinate,
+    };
+    setSelectedShapes((prevShapes) => [...prevShapes, newShape]);
+    setCurrentSelectedShape(shape);
+  };
 
   const handleClick = () => {
     const r = Math.floor(Math.random() * 256);
@@ -24,46 +37,65 @@ const MenuBar = () => {
     setColor(randomColor);
   };
 
-  const renderShape = () => {
-    return <Shapes shape={shape} color={color} handleClick={handleClick} />;
-  };
-
   return (
     <div className="d-flex flex-column justify-content-start">
       <div className="d-flex flex-row justify-content-between align-self-center card shadow mt-2 w-25 p-0">
         <button
           type="button"
-          className={shape === 'rectangle' ? 'btn selected-shape' : 'btn'}
+          className={
+            currentSelectedShape === 'rectangle' ? 'btn selected-shape' : 'btn'
+          }
           onClick={() => updateShape('rectangle')}>
           <PiRectangle className="fs-5" />
         </button>
         <button
           type="button"
-          className={shape === 'circle' ? 'btn selected-shape' : 'btn'}
+          className={
+            currentSelectedShape === 'circle' ? 'btn selected-shape' : 'btn'
+          }
           onClick={() => updateShape('circle')}>
           <PiCircle className="fs-5" />
         </button>
         <button
           type="button"
-          className={shape === 'star' ? 'btn selected-shape' : 'btn'}
+          className={
+            currentSelectedShape === 'star' ? 'btn selected-shape' : 'btn'
+          }
           onClick={() => updateShape('star')}>
           <PiStar className="fs-5" />
         </button>
         <button
           type="button"
-          className={shape === 'line' ? 'btn selected-shape' : 'btn'}
+          className={
+            currentSelectedShape === 'line' ? 'btn selected-shape' : 'btn'
+          }
           onClick={() => updateShape('line')}>
           <IoRemoveOutline className="fs-5" />
         </button>
         <button
           type="button"
-          className={shape === 'polygon' ? 'btn selected-shape' : 'btn'}
+          className={
+            currentSelectedShape === 'polygon' ? 'btn selected-shape' : 'btn'
+          }
           onClick={() => updateShape('polygon')}>
           <BiPolygon className="fs-5" />
         </button>
       </div>
-      <div className="w-100 d-flex flex-column justify-content-center">
-        {renderShape()}
+      <div>
+        <Stage width={window.innerWidth} height={window.innerHeight}>
+          <Layer>
+            {selectedShapes.map((item, index) => (
+              <Shapes
+                key={index}
+                shape={item.shape}
+                color={color}
+                xCordinate={item.xCordinate}
+                yCordinate={item.yCordinate}
+                handleClick={handleClick}
+              />
+            ))}
+          </Layer>
+        </Stage>
       </div>
     </div>
   );

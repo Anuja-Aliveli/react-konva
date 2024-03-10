@@ -6,3 +6,9 @@ export interface ShapesObject {
   line: string;
   polygon: string;
 }
+
+export interface SelectedShapesObj {
+  shape: string;
+  xCordinate: number;
+  yCordinate: number;
+}
