@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PiCircle, PiRectangle, PiStar } from 'react-icons/pi';
 import { IoRemoveOutline } from 'react-icons/io5';
 import { BiPolygon } from 'react-icons/bi';
+import { v4 as uuid } from 'uuid';
 import Shapes from '../Shapes/shapes';
 import { Stage, Layer } from 'react-konva';
 import './menu-bar.css';
@@ -9,7 +10,7 @@ import { SelectedShapesObj } from '../Interfaces/shapes.interface';
 
 const MenuBar = () => {
   const [currentSelectedShape, setCurrentSelectedShape] = useState<string>('');
-  const [selectedShapes, setSelectedShapes] = useState<SelectedShapesObj[]>([]);
+  let [selectedShapes, setSelectedShapes] = useState<SelectedShapesObj[]>([]);
 
   const [color, setColor] = useState<string>('green');
 
@@ -17,6 +18,7 @@ const MenuBar = () => {
     const xCordinate: number = Math.floor(Math.random() * (1200 - 20 + 1)) + 20;
     const yCordinate: number = Math.floor(Math.random() * (450 - 55 + 1) + 55);
     const newShape: SelectedShapesObj = {
+      id: uuid(),
       shape,
       xCordinate,
       yCordinate,
@@ -35,6 +37,21 @@ const MenuBar = () => {
       g.toString(16).padStart(2, '0') +
       b.toString(16).padStart(2, '0');
     setColor(randomColor);
+  };
+
+  const updateCoordinates = (tempShape: SelectedShapesObj) => {
+    setSelectedShapes((prevShapes) =>
+      prevShapes.map((eachShape) => {
+        if (eachShape.id === tempShape.id) {
+          return {
+            ...eachShape,
+            xCoordinate: tempShape.xCordinate,
+            yCoordinate: tempShape.yCordinate,
+          };
+        }
+        return eachShape;
+      }),
+    );
   };
 
   return (
@@ -87,11 +104,10 @@ const MenuBar = () => {
             {selectedShapes.map((item, index) => (
               <Shapes
                 key={index}
-                shape={item.shape}
+                shape={item}
                 color={color}
-                xCordinate={item.xCordinate}
-                yCordinate={item.yCordinate}
                 handleClick={handleClick}
+                updateCoordinates={updateCoordinates}
               />
             ))}
           </Layer>

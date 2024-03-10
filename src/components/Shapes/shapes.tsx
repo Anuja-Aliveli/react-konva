@@ -1,8 +1,12 @@
 import React from 'react';
 import { Rect, Circle, Line, Text, RegularPolygon, Star } from 'react-konva';
-import { ShapesObject } from '../Interfaces/shapes.interface';
+import {
+  SelectedShapesObj,
+  ShapesObject,
+} from '../Interfaces/shapes.interface';
 
 const Shapes = (props: any) => {
+  const { id, shape, xCordinate, yCordinate } = props.shape;
   const shapesObj: ShapesObject = {
     rectangle: 'rectangle',
     text: 'text',
@@ -12,14 +16,24 @@ const Shapes = (props: any) => {
     polygon: 'polygon',
   };
 
+  const passCordinates = (event: any) => {
+    const parentShapeObj: SelectedShapesObj = {
+      id: id,
+      shape: shape,
+      xCordinate: event.target.x(),
+      yCordinate: event.target.y(),
+    };
+    props.updateCoordinates(parentShapeObj);
+  };
+
   const renderRequiredShape = () => {
-    switch (props.shape) {
+    switch (shape) {
       case shapesObj.rectangle:
         return (
           <Rect
             key="rectangle"
-            x={props.xCordinate}
-            y={props.yCordinate}
+            x={xCordinate}
+            y={yCordinate}
             width={100}
             height={100}
             fill={props.color}
@@ -32,8 +46,8 @@ const Shapes = (props: any) => {
         return (
           <Circle
             key="circle"
-            x={props.xCordinate}
-            y={props.yCordinate}
+            x={xCordinate}
+            y={yCordinate}
             stroke="black"
             radius={50}
             draggable
@@ -45,8 +59,8 @@ const Shapes = (props: any) => {
         return (
           <Star
             key="star"
-            x={props.xCordinate}
-            y={props.yCordinate}
+            x={xCordinate}
+            y={yCordinate}
             numPoints={5}
             innerRadius={20}
             outerRadius={50}
@@ -61,8 +75,8 @@ const Shapes = (props: any) => {
         return (
           <Line
             key="line"
-            x={props.xCordinate}
-            y={props.yCordinate}
+            x={xCordinate}
+            y={yCordinate}
             points={[0, 0, 100, 0]}
             stroke={props.color}
             strokeWidth={3}
@@ -77,8 +91,8 @@ const Shapes = (props: any) => {
         return (
           <RegularPolygon
             key="polygon"
-            x={props.xCordinate}
-            y={props.yCordinate}
+            x={xCordinate}
+            y={yCordinate}
             sides={5}
             radius={100}
             fill={props.color}
@@ -86,6 +100,7 @@ const Shapes = (props: any) => {
             stroke="black"
             strokeWidth={4}
             draggable
+            onDragMove={passCordinates}
           />
         );
       default:

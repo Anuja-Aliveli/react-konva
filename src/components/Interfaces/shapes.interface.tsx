@@ -8,6 +8,7 @@ export interface ShapesObject {
 }
 
 export interface SelectedShapesObj {
+  id: string;
   shape: string;
   xCordinate: number;
   yCordinate: number;
