@@ -1,5 +1,12 @@
-import React from 'react';
-import { Rect, Circle, Line, Text, RegularPolygon, Star } from 'react-konva';
+import {
+  Rect,
+  Circle,
+  Line,
+  Text,
+  RegularPolygon,
+  Star,
+  Shape,
+} from 'react-konva';
 import {
   SelectedShapesObj,
   ShapesObject,
@@ -25,7 +32,6 @@ const Shapes = (props: any) => {
     };
     props.updateCoordinates(parentShapeObj);
   };
-
   const renderRequiredShape = () => {
     switch (shape) {
       case shapesObj.rectangle:
